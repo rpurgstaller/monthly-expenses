@@ -43,7 +43,6 @@ def show_expenses_by_category_treemap(df: pd.DataFrame, **kwargs):
 
 
 def show_expenses_by_category_treemap_advanced(df: pd.DataFrame, **kwargs):
-
     fig = px.treemap(
         df,
         path=[px.Constant("expenses per month"), 'category', "expense_name"],
@@ -53,7 +52,7 @@ def show_expenses_by_category_treemap_advanced(df: pd.DataFrame, **kwargs):
         title='Expenses by Category',
         custom_data=['exp_label'],
         hover_data=['exp_label'],
-        color_continuous_midpoint=np.average(df['amount_per_month']),
+        color_continuous_midpoint=np.max(df['amount_per_month'])/2.0,
         **kwargs
     )
 

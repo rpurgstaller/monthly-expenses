@@ -26,7 +26,12 @@ CREATE VIEW monthly_expenses_md_v AS
            me.cancellation_notes as "Kündigung/Fristen"
     from monthly_expenses_v me
     union all
-    select null, null, round(sum(me_sum.amount_per_month), 2), round(sum(me_sum.amount_per_year), 2), null, null
+    select null,
+           null,
+           round(sum(me_sum.amount_per_month), 2),
+           round(sum(me_sum.amount_per_year), 2),
+           null,
+           null
     from monthly_expenses_v me_sum
 ;
 
@@ -35,30 +40,3 @@ CREATE VIEW monthly_expenses_tax_deductible_v AS
     from monthly_expenses_v me
     where is_tax_deductible = 'x'
 ;
-
-CREATE VIEW personal_data_access_v AS
-    select pde.id as entity_id,
-           pde.name as entity_name,
-           pdt.id as type_id,
-           pdt.name as type_name
-    from personal_data_access a
-    join personal_data_type pdt on a.personal_data_type_id = pdt.id
-    join personal_data_entity pde on a.personal_data_entity_id = pde.id
-;
-drop view personal_data_access_v
-;
-select * from personal_data_access_v order by entity_name
-;
-
-insert into personal_data_entity (name)
-values ('oebb'), ('economist'), ('profil'), ('sparkasse'), ('flatex'), ('scalable')
-     , ('willbe'), ('helpm'), ('Voestalpine'), ('City Adventure Center'), ('Uniqa'), ('ÖGK')
-     , ('Finanzonline'), ('Alpenverein'), ('Sportunion Graz')
-
-;
-
-insert into personal_data_access (personal_data_type_id, personal_data_entity_id)
-select 4, id from personal_data_entity
-where name in ('Uniqa', 'City Adventure Center', 'Voestalpine')
-
-delete from personal_data_access where personal_data_entity_id = 17 and personal_data_type_id = 4
